@@ -55,22 +55,34 @@ SessionClass = sessionmaker(bind=engine)
 session = SessionClass()
 
 # 轉帳
-session.add(Bank_trans_table(from_user_id=3, to_user_id=4, money=500.0))
+trans_money = 100.0 #本次轉帳金額
+from_user_id = 1 #轉賬者id
+to_user_id = 2  #收款者id
+session.add(Bank_trans_table(from_user_id=from_user_id, to_user_id=to_user_id, money=trans_money))
 
 # 檢查
-query = session.query(Bank_money_table).filter(Bank_money_table.user_id == 3)
-money = query.first().money
-if money < 500:
-    # 回滚
+query = session.query(Bank_user_table).filter(Bank_user_table.id == from_user_id)
+from_user_name = query.first().user_name # 轉賬者姓名
+query = session.query(Bank_user_table).filter(Bank_user_table.id == to_user_id)
+to_user_name = query.first().user_name # 收款者姓名
+
+query = session.query(Bank_money_table).filter(Bank_money_table.user_id == from_user_id)
+from_money = query.first().money # 轉賬者餘額
+
+
+if from_money < trans_money: #轉賬者餘額不足時
+    # 回溯
+    print(f"[!] {from_user_name} 餘額不足: 無法轉出 {trans_money} 極客幣，帳戶餘額 {from_money} 極客幣")
     session.rollback()
 else:
-    # update
-    new_money = money - 500
-    query.update({Bank_money_table.money: new_money})
-    # 计算接收方新的余额
-    query = session.query(Bank_money_table).filter(Bank_money_table.user_id == 4)
-    money = query.first().money
-    new_balance = money + 500
-    query.update({Bank_money_table.money: new_money})
+    # 更新轉賬者帳戶
+    new_from_money = from_money - trans_money
+    query.update({Bank_money_table.money: new_from_money})
+    # 更新收款人帳戶
+    query = session.query(Bank_money_table).filter(Bank_money_table.user_id == to_user_id)
+    to_money = query.first().money
+    new_to_money = to_money + trans_money
+    query.update({Bank_money_table.money: new_to_money})
+    print(f"[+] {from_user_name} 成功轉給 {to_user_name} 共 {trans_money} 極客幣，帳戶餘額 {new_from_money} 極客幣")
 
     session.commit()

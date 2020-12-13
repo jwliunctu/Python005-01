@@ -54,12 +54,12 @@ Base.metadata.create_all(engine)
 SessionClass = sessionmaker(bind=engine)
 session = SessionClass()
 
-# 創建使用者(張三與李四)，各有1000元存款
+# 創建使用者(張三與李四)，張三99元,李四1000元存款
 session.add(Bank_user_table(user_name='張三'))
 session.add(Bank_user_table(user_name='李四'))
 
 user = session.query(Bank_user_table.id).filter(Bank_user_table.user_name=='張三').first()
-session.add(Bank_money_table(user_id=user.id, money=1000.00))
+session.add(Bank_money_table(user_id=user.id, money=99.00))
 
 user = session.query(Bank_user_table.id).filter(Bank_user_table.user_name=='李四').first()
 session.add(Bank_money_table(user_id=user.id, money=1000.00))
