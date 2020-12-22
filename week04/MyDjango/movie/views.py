@@ -8,5 +8,6 @@ def index(request):
     return HttpResponse('Hello Django!')
 
 def movie(request):
-    data=Comment.objects.filter(star__gte=4).exclude(star=0).order_by('-created_at').all()
+    search = request.GET.get('q','') #取得網址q參數
+    data = Comment.objects.filter(content__contains=search,star__gte=4).exclude(star=0).order_by('-created_at').all()
     return render(request, 'movie.html', locals())
