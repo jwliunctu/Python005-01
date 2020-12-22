@@ -18,7 +18,11 @@
     </form>
 </nav>
 <div class="container">
-    <h3 class="mt-5 mb-3">電影名稱：星際效應</h3>
+    <h3 class="mt-5 mb-3">電影名稱：星際效應 
+        {% if search != '' %}
+            ( 顯示包含「{{ search }}」的短評)
+        {% endif %}
+    </h3>
     <table class="table">
         <thead class="thead-light">
         <tr>
