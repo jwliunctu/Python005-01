@@ -12,7 +12,7 @@ client.hset('video_count', 1001, 1)
 client.hset('video_count', 1002, 1)
 
 def counter(video_id: int):   
-    client = redis.Redis(host='35.201.216.2', password='fsaopj2_;an')
+    client = redis.Redis(host=host, password=passwd)
     count_number = client.hget('video_count', video_id)
     client.hset('video_count', video_id, int(count_number.decode())+1)
     return count_number
