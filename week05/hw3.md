@@ -20,9 +20,9 @@
 
     Ans: 
 
-    1. **Direct Exchange** 根據route key 直接找到隊列
-    2. **Topic Exchange** 根據route key 匹配隊列
-    3. **Topic Exchange** 不處理route key 全網發送，所有綁定的隊列都發送
+    1. Fanout Exchange（ 轉發消息最快）：所有發送到Fanout Exchange的消息都會被轉發到與該Exchange 綁定(Binding)的所有Queue上。
+    2. Direct Exchange（RouteKey區別）：所有發送到Direct Exchange的消息被轉發到RouteKey中指定的Queue。
+    3. Topic Exchange（RouteKey + 某Topic）：所有發送到Topic Exchange的消息被轉發到所有關聯RouteKey中指定Topic的Queue上。
 
 - 架构中引入消息队列是否利大于弊？你认为消息队列有哪些缺点？
 
