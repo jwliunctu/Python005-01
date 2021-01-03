@@ -54,7 +54,7 @@ class Animal():
         self.body_type = body_type
         self.character = character
 
-    # 是否為凶猛动物
+    # 是否為凶猛动物（若False則適合作為寵物）
     @property
     def is_fierce(self):
         return self.body_type in ['中', '大'] and self.diet == '食肉' and self.character == '兇猛'
@@ -62,15 +62,13 @@ class Animal():
 
 class Cat(Animal):
     voice = '喵' #叫聲
-    pet = True # 適合作為寵物
     def __init__(self, name, diet, body_type, character):
         super().__init__(diet, body_type, character)
         self.name = name
 
 
-class Tiger(Animal):
-    voice = '吼'
-    pet = False
+class Dog(Animal):
+    voice = '汪'
     def __init__(self, name, diet, body_type, character):
         super().__init__(diet, body_type, character)
         self.name = name
@@ -86,9 +84,9 @@ if __name__ == '__main__':
     # 增加一隻貓到動物園
     z.add_animal(cat1)
 
-    # 增加一隻老虎到動物園
-    tiger1 = Tiger('老虎 1', '食肉', '中', '兇猛')
-    z.add_animal(tiger1)
+    # 增加一隻狗到動物園
+    dog1 = Dog('大狼狗 1', '食肉', '中', '兇猛')
+    z.add_animal(dog1)
 
     # 貓無法重複添加
     z.add_animal(cat1)
